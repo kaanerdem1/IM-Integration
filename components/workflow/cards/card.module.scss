@@ -1,0 +1,40 @@
+.animatedCard {
+  border: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    padding: 1px;
+    -webkit-mask:
+      linear-gradient(var(--mantine-color-gray-4) 0 0) content-box,
+      linear-gradient(var(--mantine-color-gray-4) 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--snake-angle, 0deg),
+      var(--mantine-color-gray-4) 0deg 320deg,
+      var(--mantine-color-gray-9) 330deg 360deg
+    );
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    animation: snake-spin 1.8s linear infinite;
+  }
+}
+
+@property --snake-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes snake-spin {
+  to {
+    --snake-angle: 360deg;
+  }
+}

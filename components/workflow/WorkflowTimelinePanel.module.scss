@@ -1,0 +1,36 @@
+.panel {
+  height: 100%;
+  padding-block: var(--mantine-spacing-md);
+  background: var(--mantine-color-gray-0);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--mantine-spacing-md);
+  padding-inline: var(--mantine-spacing-md);
+}
+
+.timelineScroll {
+  height: calc(100% - 36px);
+  padding-inline: var(--mantine-spacing-md);
+}
+
+.itemCard {
+  padding: 10px 12px;
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--mantine-color-gray-3);
+  background: var(--mantine-color-white);
+}
+
+.itemMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  margin-bottom: 8px;
+}
+
+.cardRow {
+  min-width: 0;
+}

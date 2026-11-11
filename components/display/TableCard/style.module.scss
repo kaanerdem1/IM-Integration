@@ -1,0 +1,79 @@
+// Uygulamanın standart tablo kartı: liste sayfaları ve detay sekmeleri aynı çerçeveyi kullanır
+.card {
+  // Linked cell content shrinks to its content and wraps at the shared width limit.
+  --app-table-cell-content-width: max-content;
+  --app-table-cell-content-max-width: 260px;
+
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-white);
+  overflow: hidden;
+
+  &[data-empty] {
+    padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  }
+
+  // Keep total padding/height while allowing the shared loader to own the top gap.
+  &:has(> [data-loading]) {
+    padding-top: 0;
+    padding-bottom: calc(2 * var(--mantine-spacing-xs));
+  }
+}
+
+// Kart bulunduğu alanı doldurur; kaydırma tablo kartının içinde kalır
+.fill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+// Yalnızca işaretlenen işlem hücreleri sabitlenir; diğer son sütunlar etkilenmez.
+.stickyActionColumn:is(th, td) {
+  position: sticky;
+  inset-inline-end: 0;
+
+  // Hücre içeriğinin (1) üstünde, yapışkan başlığın (3) altında kalır.
+  z-index: 2;
+  width: 3.25rem;
+  min-width: 3.25rem;
+  max-width: 3.25rem;
+  padding-inline: 0.75rem;
+  background-color: var(--mantine-color-white);
+  border-inline-style: hidden;
+
+  // Mantine başlık çizgisini kaldırır; başlık ve gövdede aynı tek ayırıcı kullanılır.
+  &::before {
+    content: none;
+  }
+
+  // Collapse kenarlıkları yerine hücrenin aynı konumunda standart tablo çizgisi çizilir.
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 1px;
+    background-color: var(--table-border-color);
+    pointer-events: none;
+  }
+
+  :global(.mantine-Table-tbody) > :global(tr[data-striped='odd']:nth-of-type(odd)) > &,
+  :global(.mantine-Table-tbody) > :global(tr[data-striped='even']:nth-of-type(even)) > & {
+    background-color: var(--table-striped-color);
+  }
+
+  @media (hover: hover) {
+    :global(.mantine-Table-tbody) > :global(tr[data-hover]:hover) > & {
+      background-color: var(--tr-hover-bg);
+    }
+  }
+
+  @media (hover: none) {
+    :global(.mantine-Table-tbody) > :global(tr[data-hover]:active) > & {
+      background-color: var(--tr-hover-bg);
+    }
+  }
+}

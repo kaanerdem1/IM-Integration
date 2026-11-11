@@ -1,0 +1,371 @@
+// Detay çekmecesi iskeleti (talep + görev): başlık satırı, sekme şeridi, sol içerik ve sağ panel.
+// Sabit konumlandırma yerine ızgara/flex; ölçüler kabuğun değişkenleriyle aynı dili kullanır.
+
+.content {
+  --detail-header-height: 60px;
+  --detail-right-panel-width: 320px;
+
+  position: relative;
+  border: 0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+// Çekmece gövdesi: 1. satır başlık (bilgi | aksiyonlar | kapat), 2. satır içerik
+.body {
+  position: relative;
+  display: grid;
+  grid-template-areas:
+    'head action close'
+    'body body body';
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-rows: var(--detail-header-height) minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
+  padding: 0;
+
+  // Follow the actual header rows at every width, without measuring them in React.
+  &:has(.drawerDetailBody) > .loadingOverlay {
+    grid-area: body;
+  }
+}
+
+// ── Başlık satırı ────────────────────────────────────────────────────────────
+.drawerDetailHead {
+  grid-area: head;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: var(--detail-header-height);
+  padding-left: var(--mantine-spacing-md);
+  background: var(--mantine-color-white);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+
+  .drawerDetailHeadBody {
+    display: flex;
+    align-items: center;
+    gap: var(--mantine-spacing-md);
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+  }
+}
+
+.headAction {
+  grid-area: action;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--mantine-spacing-xs);
+  height: var(--detail-header-height);
+  padding-inline: var(--mantine-spacing-md);
+  background: var(--mantine-color-white);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+.close {
+  grid-area: close;
+  display: flex;
+  align-items: center;
+  height: var(--detail-header-height);
+  padding-right: var(--mantine-spacing-md);
+  background: var(--mantine-color-white);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+// Başlık bloğu: modül ikonu + başlık/rozet + meta satırı (uygulama header'ı ile aynı dil)
+.headTitle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.headIcon {
+  flex-shrink: 0;
+}
+
+.headText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.headTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.headTitleText {
+  flex-shrink: 0;
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--mantine-color-gray-9);
+  white-space: nowrap;
+}
+
+.headSubjectSeparator {
+  flex-shrink: 0;
+  color: var(--mantine-color-gray-4);
+}
+
+.headSubject {
+  min-width: 0;
+}
+
+.headBadges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin-top: 4px;
+}
+
+// Meta satırı tek satır metin gibi akar: daralınca sondan üç nokta ile kısalır
+.headMeta {
+  display: block;
+  min-width: 0;
+  margin-top: 2px;
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--mantine-color-gray-6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.headMetaItem {
+  display: inline;
+}
+
+.headMetaEntry {
+  display: inline;
+}
+
+.headMetaSeparator {
+  display: inline;
+  margin-inline: 6px;
+  color: var(--mantine-color-gray-4);
+}
+
+// Shared header layout with separate widths for task, request and service inventory drawers.
+.responsiveRoot {
+  --detail-drawer-size: 50%;
+
+  @media (width < 100em) {
+    --detail-drawer-size: 70%;
+  }
+}
+
+.responsiveRequestRoot {
+  --detail-drawer-size: 85%;
+}
+
+.responsiveServiceInventoryRoot {
+  --detail-drawer-size: 100%;
+}
+
+@media (width <= 64em) {
+  .responsiveRoot,
+  .responsiveRequestRoot {
+    --detail-drawer-size: 100%;
+  }
+}
+
+.responsiveContent {
+  container: detail-drawer / inline-size;
+}
+
+.responsiveBody {
+  grid-template-rows: auto minmax(0, 1fr);
+
+  .drawerDetailHead,
+  .headAction,
+  .close {
+    height: auto;
+    min-height: var(--detail-header-height);
+    padding-block: 10px;
+  }
+
+  .drawerDetailHeadBody {
+    height: auto;
+  }
+
+  .headTitle {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .headMeta {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 2px;
+    overflow: visible;
+    white-space: normal;
+    text-overflow: clip;
+  }
+
+  .headMetaEntry {
+    display: inline-flex;
+    align-items: baseline;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .headMetaItem {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .headMetaSeparator {
+    flex-shrink: 0;
+  }
+
+  .headAction {
+    min-width: 0;
+
+    > :global(.mantine-Group-root) {
+      flex-shrink: 1;
+      justify-content: flex-end;
+      max-width: 100%;
+    }
+  }
+
+  @container detail-drawer (max-width: 900px) {
+    grid-template-areas:
+      'head close'
+      'action action'
+      'body body';
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto minmax(0, 1fr);
+
+    .drawerDetailHead,
+    .close {
+      border-bottom: 0;
+    }
+
+    .close {
+      align-self: start;
+    }
+
+    .headAction {
+      min-height: 0;
+      padding-top: 0;
+
+      > :global(.mantine-Group-root) {
+        flex-wrap: wrap;
+      }
+    }
+  }
+}
+
+// ── Gövde ────────────────────────────────────────────────────────────────────
+.drawerDetailBody {
+  grid-area: body;
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+
+  .drawerDetailBodyLeft {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    background: var(--mantine-color-white);
+
+    .drawerDetailBodyLeftContent {
+      position: relative;
+      width: 100%;
+      flex: 1 1 0;
+      height: 0;
+
+      // Uzun workflow geçmişi form alanını tamamen sıkıştırmasın.
+      min-height: min(240px, 100%);
+      overflow: hidden;
+
+      // Sabit timeline altında editör, mesaj listesinin görünür alanını tüketmesin.
+      &.drawerDetailBodyLeftContentCommentMode {
+        min-height: 360px;
+      }
+
+      > :global(.mantine-ScrollArea-viewport) {
+        height: 100%;
+        min-height: 0;
+      }
+
+      > :global(.mantine-ScrollArea-viewport) > :global(.mantine-ScrollArea-content) {
+        min-height: 100%;
+      }
+    }
+  }
+
+  .drawerDetailBodyLeftContentCommentMode {
+    > :global(.mantine-ScrollArea-viewport) {
+      overflow-x: hidden !important;
+      overflow-y: hidden !important;
+
+      > :global(.mantine-ScrollArea-content) {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;
+
+        > * {
+          flex: 1 1 0;
+          min-height: 0;
+        }
+      }
+    }
+  }
+
+  .drawerDetailBodyLeftContentFillMode {
+    > :global(.mantine-ScrollArea-viewport) {
+      overflow-x: hidden !important;
+
+      > :global(.mantine-ScrollArea-content) {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 100%;
+
+        > * {
+          flex: 1 1 auto;
+          min-height: 0;
+        }
+      }
+    }
+  }
+
+  // Sağ panel (iş akışı adımları / ileride görev detayı): kartlar gray.0 zemin üzerinde
+  .drawerDetailBodyRight {
+    position: relative;
+    flex: 0 0 var(--detail-right-panel-width);
+    width: var(--detail-right-panel-width);
+    height: 100%;
+    min-height: 0;
+    background: var(--mantine-color-gray-0);
+    border-left: 1px solid var(--mantine-color-gray-2);
+
+    .drawerDetailBodyRightContent {
+      display: flex;
+      flex-direction: column;
+      gap: var(--mantine-spacing-lg);
+      min-height: 100%;
+    }
+  }
+}

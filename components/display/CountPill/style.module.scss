@@ -1,0 +1,16 @@
+// Başlık yanındaki sayaç pill'i
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--mantine-color-cyan-9);
+  background: var(--mantine-color-cyan-0);
+  white-space: nowrap;
+}

@@ -1,0 +1,9 @@
+.content {
+  pre {
+    background: color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  mark {
+    color: var(--mantine-color-gray-9);
+  }
+}

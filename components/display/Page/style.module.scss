@@ -1,0 +1,38 @@
+$left-section-width: 300px;
+
+.pegeWrapper {
+  padding: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .pageLeft {
+    height: calc(100svh - 60px);
+    width: $left-section-width;
+    position: absolute;
+    border-right: 1px solid var(--mantine-color-gray-3);
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  .pageRight {
+    width: 100%;
+    padding-left: $left-section-width;
+    height: calc(100dvh - 60px);
+  }
+}
+
+.pageHead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  height: 55px;
+  z-index: 10;
+}

@@ -1,0 +1,33 @@
+.richTextValue {
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+
+  :where(p, ul, ol, pre) {
+    margin: 0;
+  }
+
+  :where(p + p, p + ul, p + ol, ul + p, ol + p, pre + p) {
+    margin-top: var(--mantine-spacing-xs);
+  }
+
+  :where(ul, ol) {
+    padding-left: var(--mantine-spacing-md);
+  }
+
+  :where(pre) {
+    padding: var(--mantine-spacing-xs);
+    white-space: pre-wrap;
+    background: var(--mantine-color-gray-0);
+    border-radius: var(--mantine-radius-sm);
+  }
+
+  :where(code) {
+    font-family: var(--mantine-font-family-monospace);
+  }
+
+  :where(mark) {
+    background: var(--mantine-color-yellow-1);
+  }
+}

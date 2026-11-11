@@ -1,0 +1,114 @@
+.surface,
+.popover,
+.card {
+  --chart-tooltip-border: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.surface,
+.popover:global(.mantine-HoverCard-dropdown),
+.card:global(.mantine-Paper-root) {
+  border: 1px solid var(--chart-tooltip-border);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-body);
+  box-shadow: 0 2px 10px rgb(1 22 32 / 7.5%);
+}
+
+.surface {
+  position: fixed;
+  z-index: 1000;
+  width: min(400px, calc(100vw - 24px));
+  pointer-events: auto;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  max-height: min(560px, 70dvh, var(--chart-tooltip-height, 70dvh));
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  min-width: min(220px, calc(100vw - 24px));
+  color: var(--mantine-color-text);
+}
+
+/* The outer surface owns the frame so the arrow can cover its joining edge.
+   Scope the reset to chart cards; the global Paper z-index/border must not split the arrow. */
+.surface > .card,
+.popover > .card {
+  z-index: 0;
+  max-height: calc(min(560px, 70dvh, var(--chart-tooltip-height, 70dvh)) - 2px);
+  border: 0;
+  box-shadow: none;
+}
+
+.popoverArrow {
+  --popover-border-color: var(--chart-tooltip-border);
+}
+
+.header {
+  flex-shrink: 0;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+}
+
+.content {
+  padding: 8px 10px 8px 16px;
+}
+
+.valueRow + .valueRow {
+  /* Axis tooltips have an inverse surface even when the page uses the light theme. */
+  border-top: 1px solid color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.arrow {
+  position: absolute;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  background: var(--mantine-color-body);
+  border: 1px solid var(--chart-tooltip-border);
+  border-radius: 1px;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.surface[data-side='bottom'] .arrow {
+  top: -5px;
+  left: calc(var(--chart-tooltip-arrow) - 5px);
+  border-right: 0;
+  border-bottom: 0;
+  /* Match Mantine's floating arrow: keep the rotated square out of the scroll area. */
+  clip-path: polygon(0 100%, 0 0, 100% 0);
+}
+
+.surface[data-side='top'] .arrow {
+  bottom: -5px;
+  left: calc(var(--chart-tooltip-arrow) - 5px);
+  border-top: 0;
+  border-left: 0;
+  clip-path: polygon(0 100%, 100% 100%, 100% 0);
+}
+
+.surface[data-side='right'] .arrow {
+  top: calc(var(--chart-tooltip-arrow) - 5px);
+  left: -5px;
+  border-top: 0;
+  border-right: 0;
+  clip-path: polygon(0 100%, 0 0, 100% 100%);
+}
+
+.surface[data-side='left'] .arrow {
+  top: calc(var(--chart-tooltip-arrow) - 5px);
+  right: -5px;
+  border-bottom: 0;
+  border-left: 0;
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+
+:global([data-chart-tooltip-active]) {
+  filter: brightness(1.07);
+}

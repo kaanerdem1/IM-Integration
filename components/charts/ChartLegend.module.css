@@ -1,0 +1,15 @@
+.container {
+  container: chart-legend / inline-size;
+  min-width: 0;
+}
+
+.items {
+  justify-content: flex-start;
+}
+
+/* Use the legend's available width, including when a wide screen contains narrow cards. */
+@container chart-legend (min-width: 40rem) {
+  .items[data-layout='wrap'] {
+    justify-content: center;
+  }
+}

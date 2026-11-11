@@ -1,0 +1,99 @@
+@use '../task-label';
+
+.ganttContainer {
+  --wx-grid-cell-padding-x: 12px;
+  position: relative;
+
+  :global(.wx-col-StepName) {
+    font-family: var(--mantine-font-family);
+  }
+
+  :global(.wx-links) {
+    // SVAR 2.8 centers links on its native bar height (cellHeight - 7px).
+    // The compact planned bar is shorter; shift links, preserving the SLA lane below it.
+    transform: translateY(
+      calc((var(--workflow-gantt-bar-height) - (var(--gantt-cell-height) - 7px)) / 2)
+    );
+  }
+}
+
+.stepMeasure {
+  position: absolute;
+  width: max-content;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  padding-inline: var(--wx-grid-cell-padding-x);
+  border-inline-end: 1px solid transparent;
+  font-family: var(--mantine-font-family);
+  pointer-events: none;
+}
+
+.stepMeasureHeader {
+  font-size: var(--app-table-header-font-size);
+  font-weight: var(--app-table-header-font-weight);
+  line-height: var(--app-table-header-line-height);
+  white-space: nowrap;
+}
+
+.stepMeasureText {
+  font-size: var(--app-table-cell-font-size);
+  font-weight: var(--app-table-cell-font-weight);
+  line-height: var(--app-table-cell-line-height);
+  white-space: pre;
+}
+
+.taskLabel {
+  @include task-label.responsive-text;
+
+  height: 100%;
+  overflow: hidden;
+  padding: 0 4px;
+  cursor: default;
+}
+
+.actualSlaBar {
+  position: absolute;
+  top: calc(100% + 2px);
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--wx-gantt-bar-border-radius);
+  cursor: default;
+}
+
+.actualTaskBar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--wx-gantt-bar-border-radius);
+  cursor: default;
+}
+
+.ganttContainer .actualMode {
+  --workflow-gantt-bar-offset-y: calc(
+    (var(--gantt-cell-height) - var(--workflow-gantt-bar-height)) / 2 - var(--gantt-svar-bar-top)
+  );
+
+  :global(.wx-links) {
+    display: none;
+  }
+
+  :global(.wx-bar.wx-task) {
+    border: 0;
+    background-color: transparent !important;
+    color: inherit;
+  }
+}
+
+.actualDependency {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  color: var(--wx-gantt-link-color);
+  pointer-events: none;
+}

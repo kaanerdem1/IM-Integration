@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--mantine-spacing-xs);
+  padding-inline: 50px;
+  position: relative;
+  border-radius: var(--mantine-radius-xl);
+  border: .5px solid var(--mantine-color-gray-4);
+  gap: var(--mantine-spacing-xs);
+
+  .iconWrapper {
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .text {
+    font-size: var(--mantine-font-size-sm);
+    font-weight: 500;
+    color: var(--mantine-color-gray-8);
+    text-transform: lowercase;
+
+    &:first-letter {
+      text-transform: uppercase !important;
+    }
+  }
+
+}

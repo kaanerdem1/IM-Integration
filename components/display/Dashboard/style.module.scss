@@ -1,0 +1,373 @@
+// Dashboard (özet) sayfaları için ortak stiller — IM Uygulama Kabuğu tasarımından.
+// Ana sayfa ve SLA izleme aynı kart/ızgara/dağılım parçalarını kullanır.
+
+.page {
+  --dashboard-gap: var(--mantine-spacing-md);
+
+  padding: var(--mantine-spacing-md);
+}
+
+.pageInner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dashboard-gap);
+  max-width: 1560px;
+  margin: 0 auto;
+}
+
+// Üst satır: üç eşit kolon (col-4)
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--dashboard-gap);
+  align-items: stretch;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: var(--dashboard-gap);
+  align-items: stretch;
+}
+
+// ── Kart ─────────────────────────────────────────────────────────────────────
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 18px 20px;
+  background: var(--mantine-color-white);
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: 14px;
+
+  &[data-padding='compact'] {
+    padding: 14px 20px;
+  }
+}
+
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 14px;
+  row-gap: 10px;
+  flex-shrink: 0;
+
+  :global([data-dashboard-widget]) & {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+}
+
+.cardHeadText {
+  flex: 1;
+  min-width: 180px;
+
+  :global([data-dashboard-widget]) & {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--mantine-color-gray-9);
+
+  :global([data-dashboard-widget]) & {
+    flex-wrap: wrap;
+  }
+
+  .card[data-size='sm'] & {
+    font-size: 14.5px;
+  }
+}
+
+.cardSubtitle {
+  margin-top: 2px;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--mantine-color-gray-6);
+
+  .card[data-size='sm'] & {
+    font-size: 12px;
+  }
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+// Tables share the outer section frame; only the table body scrolls.
+.requestTableBody {
+  margin-inline: -20px;
+
+  .requestTable {
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+.requestTable {
+  --loading-top-offset: calc(24px - var(--mantine-spacing-md));
+
+  flex: 1;
+  margin-top: var(--mantine-spacing-md);
+}
+
+// ── Geç planlama rozeti (header ile kartlar arasında) ────────────────────────
+.alertBadge {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: 10px;
+  padding: 3px 4px 3px 11px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--mantine-color-red-0);
+  background: var(--mantine-color-red-9);
+
+  &[data-tone='neutral'] {
+    color: var(--mantine-color-gray-7);
+    background: var(--mantine-color-gray-2);
+
+    .alertBadgeFilter {
+      color: inherit;
+      background: var(--mantine-color-gray-3);
+
+      &:hover {
+        color: inherit;
+        background: var(--mantine-color-gray-4);
+      }
+    }
+  }
+}
+
+.alertBadgeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+}
+
+// ── Dağılım kartları (havuz / tür) ────────────────────────────────────────────
+.stackedBar {
+  display: flex;
+  gap: 2px;
+  height: 12px;
+  margin-top: 16px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--mantine-color-gray-1);
+}
+
+.breakdownRows {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.breakdownRow {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  padding: 6px 0;
+  border-top: 1px solid var(--mantine-color-gray-1);
+  color: inherit;
+  text-decoration: none;
+
+  &[data-link='true']:hover .breakdownLabel {
+    color: var(--mantine-color-cyan-8);
+  }
+}
+
+.breakdownLabel {
+  align-self: baseline;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-inline-end: 9px;
+  color: var(--mantine-color-gray-8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breakdownDescription {
+  margin-left: 4px;
+  font-size: 11.5px;
+  color: var(--mantine-color-gray-6);
+}
+
+.breakdownPct {
+  margin-left: auto;
+  margin-inline-end: 9px;
+  flex-shrink: 0;
+  font-size: 11.5px;
+  color: var(--mantine-color-gray-6);
+}
+
+.breakdownValue {
+  min-width: 34px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--mantine-color-gray-9);
+}
+
+.note {
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 11.5px;
+  color: var(--mantine-color-gray-6);
+}
+
+.donutLayout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  row-gap: 12px;
+  margin-top: 12px;
+  flex: 1;
+}
+
+.donut {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  flex-shrink: 0;
+
+  svg {
+    transform: rotate(-90deg);
+  }
+}
+
+.donutCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donutValue {
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--mantine-color-gray-9);
+}
+
+.donutLabel {
+  margin-top: 2px;
+  font-size: 10.5px;
+  color: var(--mantine-color-gray-6);
+}
+
+.donutRows {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 160px;
+  min-width: 160px;
+}
+
+// ── Durum satırları (kabulde bekleyen / bitişi yaklaşan / geç planlama) ───────
+.statusRow {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statusHead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.statusIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  flex-shrink: 0;
+
+  &[data-tone='success'] {
+    color: var(--mantine-color-green-8);
+    background: var(--mantine-color-green-0);
+  }
+
+  &[data-tone='info'] {
+    color: var(--mantine-color-cyan-8);
+    background: var(--mantine-color-cyan-0);
+  }
+}
+
+.statusText {
+  flex: 1;
+  min-width: 150px;
+}
+
+.statusTitle {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--mantine-color-gray-9);
+}
+
+.statusDescription {
+  margin-top: 1px;
+  font-size: 12px;
+  color: var(--mantine-color-gray-6);
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-left: 52px; // ikon (36px) + boşluk (16px) hizası
+
+  @media (max-width: 480px) {
+    padding-left: 0;
+  }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  color: var(--mantine-color-gray-8);
+  background: var(--mantine-color-gray-1);
+  white-space: nowrap;
+  text-decoration: none;
+
+  b {
+    font-weight: 700;
+    color: var(--mantine-color-gray-9);
+  }
+
+  &[data-link='true']:hover {
+    background: var(--mantine-color-gray-2);
+  }
+}

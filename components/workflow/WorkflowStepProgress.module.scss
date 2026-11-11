@@ -1,0 +1,550 @@
+// İş akışı adım ilerlemesi: başlık ile sekmeler arasında dar bir şerit.
+// Üzerine gelince şerit yüksekliği animasyonla açılır ve adımlar yatay akış kartlarıyla listelenir.
+
+.band {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 10px var(--mantine-spacing-md);
+  background: var(--mantine-color-gray-1);
+}
+
+.progressControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 24px;
+}
+
+// İlerleme şeridin tam ortasında durur; üzerine gelince alan açılır
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 0 1 360px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: default;
+
+  .band:hover &,
+  .band:focus-within &,
+  .band[data-expanded] & {
+    background: var(--mantine-color-gray-2);
+  }
+}
+
+.pinControl {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+
+  .band:hover &,
+  .band:focus-within &,
+  .band[data-expanded] & {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.pinButton {
+  background: var(--mantine-color-gray-2);
+
+  &:hover {
+    background: var(--mantine-color-gray-3);
+  }
+}
+
+.count {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--mantine-color-gray-7);
+}
+
+// Adım şeridi: geçmiş cyan, iade turuncu, iptal kırmızı, aktif koyu ve geniş, kalanlar gri
+.track {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.segment {
+  height: 6px;
+  flex: 1 1 0;
+  min-width: 4px;
+  border-radius: 999px;
+  background: var(--mantine-color-gray-3);
+
+  &[data-state='done'] {
+    background: var(--workflow-progress-muted);
+  }
+
+  &[data-state='done'][data-returned] {
+    background: var(--workflow-returned-color);
+  }
+
+  &[data-state='done'][data-cancelled] {
+    background: var(--workflow-canceled-color);
+  }
+
+  &[data-state='current'] {
+    flex-grow: 2.2;
+    background: var(--workflow-progress-active);
+  }
+
+  // SLA aşan adım kırmızı gösterilir
+  &[data-exceeded] {
+    background: var(--app-sla-exceeded-gantt);
+  }
+
+  &[data-state='current'][data-exceeded] {
+    background: var(--app-sla-exceeded-chart);
+  }
+}
+
+// Açılan alan: dropdown değil, şeridin kendi yüksekliği animasyonla büyür
+.detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  margin-bottom: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    grid-template-rows 280ms ease,
+    margin-top 280ms ease,
+    margin-bottom 280ms ease,
+    opacity 200ms ease;
+
+  .band:hover &,
+  .band:focus-within &,
+  .band[data-expanded] & {
+    grid-template-rows: 1fr;
+    margin-top: 10px;
+    // Negatif alt boşluk: kaydırma çubuğu gri şeridin en alt kenarına yapışır
+    margin-bottom: -10px;
+    opacity: 1;
+  }
+}
+
+.detailContent {
+  min-height: 0;
+  overflow: hidden;
+}
+
+// Yatay akış: kutu yerine çizgi + nokta; her sütunda durum, kişi ve adım bilgisi
+.flowScroll {
+  padding-bottom: 10px;
+}
+
+// Kaydırma çubuğu her zaman görünür; rengi şerit zemininin koyu tonu
+.flowScrollbar {
+  padding: 0;
+  background: transparent;
+
+  &:hover {
+    background: transparent;
+  }
+}
+
+.flowThumb {
+  background: var(--mantine-color-gray-4) !important;
+
+  &:hover {
+    background: var(--mantine-color-gray-5) !important;
+  }
+}
+
+.flow {
+  display: flex;
+  align-items: flex-start;
+  // Alt boşluk: kutular kaydırma çubuğuna yapışmasın;
+  // sol boşluk ilk adımın kutusu kaydırma alanında kırpılmasın diye
+  padding: 12px 0 18px 10px;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 0 0 auto;
+  width: min-content;
+  min-width: 212px;
+  // Sağ boşluk kutular arasındaki mesafeyi verir
+  padding-right: 30px;
+  // Zemin katmanı adımın kendi yığın bağlamında kalsın: opacity geçişinde kaybolmaz
+  isolation: isolate;
+  // Geçmiş ve gelecek adımlar soluk; bulunulan adım öne çıkar
+  opacity: 0.55;
+  transition: opacity 160ms ease;
+
+  &[data-state='current'],
+  &[data-cancelled],
+  &:hover {
+    opacity: 1;
+  }
+
+  // Aktif adımın SLA bilgisi, işlem geçmişi ve gerekçeler için daha geniş sütun
+  &[data-state='current'],
+  &[data-history],
+  &[data-note] {
+    min-width: 336px;
+  }
+
+  // Zemin ve çerçeve yerleşimi etkilemesin diye içeriğin arkasına katman olarak çizilir
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: -8px 20px -8px -10px;
+    border: 1px solid transparent;
+    border-radius: var(--mantine-radius-md);
+    pointer-events: none;
+  }
+
+  // Bulunulan adım: şerit zemininin bir ton grisi ve ince çerçeve
+  &[data-state='current']::after {
+    border-color: var(--mantine-color-gray-3);
+    background: var(--mantine-color-gray-2);
+  }
+
+  // SLA aşan adım kırmızı çerçeveye alınır
+  &[data-exceeded]::after {
+    border-color: var(--app-sla-exceeded-gantt);
+  }
+
+  // Noktaları birleştiren çizgi (son adımda çizilmez)
+  &:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 12px;
+    right: 0;
+    height: 1px;
+    background: var(--mantine-color-gray-3);
+  }
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  margin-bottom: 5px;
+  border-radius: 999px;
+  background: var(--mantine-color-gray-3);
+
+  &[data-state='current'] {
+    background: var(--workflow-progress-active);
+    box-shadow: 0 0 0 3px var(--workflow-progress-light);
+  }
+
+  &[data-exceeded] {
+    background: var(--app-sla-exceeded-chart);
+    box-shadow: none;
+  }
+
+  &[data-state='current'][data-exceeded] {
+    box-shadow: 0 0 0 3px var(--app-sla-exceeded-badge);
+  }
+}
+
+.stepHead {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+  white-space: nowrap;
+
+  > * {
+    flex-shrink: 0;
+  }
+}
+
+.stepDate {
+  flex-shrink: 0;
+  font-size: var(--workflow-activity-font-size, 10.5px);
+  color: var(--mantine-color-gray-6);
+  white-space: nowrap;
+}
+
+// Kişi bilgisi tek çerçeve içinde (kenarlık her adımda aynı); adım ve durum bilgisi dışında kalır
+.person {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-top: 2px;
+  margin-right: 4px;
+  padding: 5px 8px;
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-md);
+  background: transparent;
+}
+
+.personAvatar {
+  flex-shrink: 0;
+}
+
+.personText {
+  min-width: 0;
+}
+
+.personName {
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--mantine-color-gray-9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.personUnit {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--mantine-color-gray-6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stepNames {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  margin-top: 2px;
+}
+
+.returnTarget {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+
+  svg {
+    flex-shrink: 0;
+    color: var(--mantine-color-gray-7);
+  }
+}
+
+.stepName {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--mantine-color-gray-7);
+  background: var(--mantine-color-gray-2);
+  white-space: normal;
+  overflow-wrap: anywhere;
+
+  &[data-return-target] {
+    color: var(--workflow-returned-text);
+    background: var(--workflow-returned-light);
+  }
+
+  .step[data-state='current'] & {
+    color: var(--workflow-progress-text);
+    background: var(--workflow-progress-light);
+  }
+}
+
+// Kartta sınırlı önizleme; tam gerekçe modalda okunur.
+.note {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+  text-align: left;
+
+  &[data-action='reject'] {
+    color: var(--workflow-returned-text);
+  }
+
+  &[data-action='cancel'] {
+    color: var(--workflow-canceled-text);
+  }
+}
+
+.noteText {
+  width: 100%;
+  min-width: 0;
+
+  &[data-truncated] {
+    // Son satırda aksiyona yer ayrılır; üç noktayı metnin kesildiği yere line-clamp ekler.
+    &::before {
+      content: attr(data-view-label);
+      float: right;
+      height: 2lh;
+      margin-left: 4px;
+      shape-outside: inset(calc(100% - 1lh) 0 0);
+      font-weight: 600;
+      white-space: pre;
+      visibility: hidden;
+    }
+  }
+}
+
+.noteMeasure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.noteAction {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: inline-flex;
+  border: 0;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  white-space: pre;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.currentReturn {
+  margin-top: 3px;
+}
+
+.history {
+  margin-top: 4px;
+  margin-right: 4px;
+
+  :global(.mantine-Timeline-itemBullet) svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.historyItem {
+  &:not(:first-of-type) {
+    margin-top: 6px;
+  }
+
+  &::before {
+    bottom: -6px;
+    border-color: var(--mantine-color-gray-4);
+  }
+}
+
+.historyTitle {
+  margin-bottom: 0;
+}
+
+.historyContent {
+  font-size: 10.5px;
+  line-height: 1.25;
+  color: var(--mantine-color-gray-7);
+  overflow-wrap: anywhere;
+}
+
+.historyEvent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px 3px;
+  font-size: var(--workflow-activity-font-size, 10.5px);
+  line-height: var(--workflow-activity-line-height, 1.25);
+  color: var(--mantine-color-gray-7);
+  overflow-wrap: anywhere;
+}
+
+.historySeparator {
+  flex-shrink: 0;
+  color: var(--mantine-color-gray-6);
+  font-weight: 400;
+}
+
+.historyActor {
+  min-width: 0;
+  font-weight: 400;
+}
+
+.historyHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--mantine-color-gray-7);
+  margin-top: 4px;
+  padding-top: 3px;
+  border-top: 1px solid var(--mantine-color-gray-3);
+}
+
+.historyHeadingLabel {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.historyCount {
+  color: var(--mantine-color-gray-6);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.historyViewAll {
+  margin-left: auto;
+  font-size: inherit;
+  color: var(--workflow-progress-text);
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.historyReturnSource {
+  margin-top: 2px;
+}
+
+// SLA, aktif adımın durum rozetiyle aynı satırda sağa yaslanır
+.stepSla {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+  color: var(--app-sla-exceeded-metric);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,115 @@
+.gantt {
+  position: relative;
+  border-top: 1px solid var(--mantine-color-gray-3);
+  font-family: var(--wx-font-family);
+  --wx-font-family: var(--mantine-font-family);
+  --wx-font-size: var(--app-table-cell-font-size);
+  --wx-font-size-sm: var(--app-table-header-font-size);
+  --wx-font-weight: var(--app-table-cell-font-weight);
+  --wx-font-weight-md: var(--app-table-header-font-weight);
+  --workflow-gantt-table-border: 1px solid var(--mantine-color-gray-1);
+  --wx-gantt-border: var(--workflow-gantt-table-border);
+  --wx-grid-body-cell-border: var(--workflow-gantt-table-border);
+  --wx-grid-body-row-border: var(--workflow-gantt-table-border);
+  --wx-table-border: var(--workflow-gantt-table-border);
+  --wx-table-header-background: var(--mantine-color-white);
+  --wx-timescale-border: var(--workflow-gantt-table-border);
+  /* prettier-ignore */
+  --wx-grid-body-font: var(--app-table-cell-font-weight) var(--app-table-cell-font-size) / var(--app-table-cell-line-height) var(--mantine-font-family);
+  /* prettier-ignore */
+  --wx-grid-header-font: var(--app-table-header-font-weight) var(--app-table-header-font-size) / var(--app-table-header-line-height) var(--mantine-font-family);
+  --wx-timescale-font: var(--wx-grid-header-font);
+  --wx-grid-body-font-color: var(--mantine-color-gray-7);
+  --workflow-gantt-compact-bar-height: 16px;
+  --gantt-cell-height: 34px;
+  --gantt-svar-bar-top: 3px;
+  --workflow-gantt-bar-height: var(--workflow-gantt-compact-bar-height);
+  --workflow-gantt-bar-offset-y: 0px;
+  --wx-gantt-bar-font: var(--mantine-font-weight-medium) 10px var(--mantine-font-family);
+  --workflow-gantt-sla-unknown: var(--mantine-color-gray-light);
+  --workflow-gantt-sla-unknown-text: var(--mantine-color-gray-light-color);
+  --wx-gantt-bar-border-radius: 10px;
+  --wx-gantt-task-border-color: var(--workflow-gantt-main-plan);
+  --wx-gantt-task-color: var(--workflow-gantt-main-plan);
+  --wx-gantt-task-fill-color: var(--workflow-gantt-main-plan);
+
+  :global(.wx-grid) {
+    color: var(--wx-grid-body-font-color);
+  }
+
+  :global(.wx-grid .wx-header),
+  :global(.wx-scale) {
+    border-color: var(--mantine-color-gray-3);
+  }
+
+  :global(.wx-grid .wx-header .wx-cell),
+  :global(.wx-scale .wx-cell) {
+    background-color: var(--mantine-color-white);
+    background-image: none;
+    border-color: var(--mantine-color-gray-1);
+    color: var(--mantine-color-gray-7);
+    font: var(--wx-grid-header-font) !important;
+  }
+
+  :global(.wx-grid .wx-body .wx-cell) {
+    font-size: var(--app-table-cell-font-size) !important;
+    line-height: var(--app-table-cell-line-height) !important;
+    font-weight: var(--app-table-cell-font-weight) !important;
+  }
+
+  :global(.wx-scale) .today {
+    background-color: var(--mantine-color-blue-0);
+    background-image: none;
+    color: var(--mantine-color-blue-8);
+  }
+
+  :global(.wx-gantt-holidays) .today {
+    position: absolute;
+    height: 100%;
+    background-color: color-mix(in srgb, var(--mantine-color-blue-4) 10%, transparent);
+    pointer-events: none;
+  }
+
+  :global(.wx-bar:not(.wx-milestone)) {
+    height: var(--workflow-gantt-bar-height) !important;
+    line-height: var(--workflow-gantt-bar-height) !important;
+    overflow: visible;
+    transform: translateY(var(--workflow-gantt-bar-offset-y));
+  }
+}
+
+.expandedBars {
+  --workflow-gantt-bar-height: 24px;
+  --gantt-bar-free-space: calc(var(--gantt-cell-height) - var(--workflow-gantt-bar-height));
+  --gantt-bar-center-offset: calc(var(--gantt-bar-free-space) / 2);
+  --workflow-gantt-bar-offset-y: calc(var(--gantt-bar-center-offset) - var(--gantt-svar-bar-top));
+}
+
+.zoomControls {
+  position: absolute;
+  bottom: calc(15px + var(--mantine-spacing-xs));
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 0;
+  background: var(--mantine-color-white);
+  box-shadow: 0 0 2px 1px rgb(0 0 0 / 8%);
+}
+
+.zoomButton {
+  min-width: 26px;
+  border: 0 !important;
+  border-bottom: 1px solid var(--mantine-color-gray-2) !important;
+  border-radius: 0 !important;
+  background: var(--mantine-color-white);
+  color: var(--mantine-color-text) !important;
+  opacity: 1;
+
+  &:hover {
+    background: var(--mantine-color-gray-0);
+    color: var(--mantine-color-black) !important;
+  }
+
+  &:last-child {
+    border-bottom: 0 !important;
+  }
+}

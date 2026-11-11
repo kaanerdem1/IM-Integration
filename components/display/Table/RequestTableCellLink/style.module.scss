@@ -1,0 +1,80 @@
+.cell {
+  position: relative;
+  padding: 0;
+  isolation: isolate;
+}
+
+.link {
+  display: block;
+  width: 100%;
+  padding: var(--table-vertical-spacing, var(--mantine-spacing-xs))
+    var(--table-horizontal-spacing, var(--mantine-spacing-xs));
+  color: inherit;
+
+  // Override Mantine's default cursor only for badges inside clickable cells.
+  :global(.mantine-Badge-root) {
+    cursor: pointer;
+  }
+}
+
+.link::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: '';
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: block;
+
+  // Liste sayfaları hücreyi içeriğe göre daraltıp (max-content) uzun içeriği bir üst sınırda sarabilir
+  width: var(--app-table-cell-content-width, auto);
+  min-width: 0;
+  max-width: var(--app-table-cell-content-max-width, none);
+  color: inherit;
+  text-align: inherit;
+
+  // A single-line badge must contribute its full width to the table column.
+  &:has(> :global(.mantine-Badge-root:not([data-truncate], [data-block], [data-circle]))) {
+    max-width: none;
+  }
+}
+
+// Keep both links in the text flow without nesting the secondary action inside the primary link.
+.withTrailingContent {
+  .link,
+  .content {
+    display: inline;
+  }
+
+  .link {
+    padding: 0;
+  }
+}
+
+.cell .withTrailingContent {
+  padding: var(--table-vertical-spacing, var(--mantine-spacing-xs))
+    var(--table-horizontal-spacing, var(--mantine-spacing-xs));
+}
+
+// Ayrı aksiyon, hücrenin tamamına yayılan ana bağlantının üzerinde kalır.
+.trailingContent {
+  position: relative;
+  z-index: 1;
+
+  // Let the separator collapse at line breaks instead of indenting the wrapped action.
+  white-space: normal;
+  word-spacing: 0.25em;
+
+  > * {
+    display: inline-flex;
+
+    // Center against the text line box, not the font's x-height used by vertical-align: middle.
+    height: 1lh;
+    align-items: center;
+    vertical-align: bottom;
+    word-spacing: normal;
+  }
+}

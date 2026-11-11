@@ -1,0 +1,18 @@
+@mixin responsive-text {
+  container: gantt-task-label / inline-size;
+
+  > span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Keep enough room for a few characters and the ellipsis, excluding bar padding.
+  @container gantt-task-label (width < 32px) {
+    > span {
+      // Preserve the accessible text and the parent bar's tooltip/click target.
+      opacity: 0;
+    }
+  }
+}

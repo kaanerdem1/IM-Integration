@@ -1,0 +1,27 @@
+.actions {
+  background-color: var(--mantine-color-white);
+  border-radius: 0;
+  cursor: default;
+}
+
+.disabledActionButton {
+  cursor: default;
+}
+
+:global([role='option']:has([data-custom-multi-select-actions])) {
+  background-color: var(--mantine-color-white) !important;
+  border-radius: 0 !important;
+  cursor: default;
+  opacity: 1 !important;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+:global([role='option']:has([data-custom-multi-select-actions][data-with-visible-options])) {
+  border-bottom: 1px solid var(--mantine-color-gray-1);
+}
+
+:global([role='option']:has([data-custom-multi-select-actions]):hover) {
+  background-color: var(--mantine-color-white) !important;
+}

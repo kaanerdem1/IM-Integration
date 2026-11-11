@@ -1,0 +1,16 @@
+@use '@/_assets/style/utils' as *;
+@use '@/_assets/style/variables' as *;
+
+.tableUser {
+  z-index: 1;
+  @extend .flexShrink;
+  @extend .displayStartCenterColumn;
+  transition: 0.3ms all;
+
+  p {
+    font-size: var(--app-table-cell-font-size);
+    color: var(--mantine-color-gray-6);
+    font-weight: var(--app-table-cell-font-weight);
+    line-height: var(--app-table-cell-line-height);
+  }
+}

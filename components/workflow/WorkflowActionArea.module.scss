@@ -1,0 +1,35 @@
+.summaryCard {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.assignmentCard {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  min-width: 0;
+  max-width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-gray-0);
+}
+
+.actionsGroup {
+  flex: 0 0 auto;
+  width: fit-content;
+
+  :global(.mantine-Button-root) {
+    flex: 0 0 auto;
+  }
+}
+
+.disabledAction {
+  display: inline-flex;
+  flex: 0 0 auto;
+  cursor: not-allowed;
+
+  > button {
+    pointer-events: none;
+  }
+}

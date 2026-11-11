@@ -1,0 +1,170 @@
+// Liste sayfası kiti: sabit başlık, kalan alanı dolduran kaydırılabilir tablo ve sayfalama altlığı.
+// Talepler listesi ve gelen kutusu gibi liste sayfaları aynı ölçüleri paylaşır.
+
+// Sayfa kabuk içeriğini tam doldurur ki altlık en alta otursun
+.listPage {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+// Yapışkan sayfa başlığı (görünüm sekmeleri + araç çubuğu)
+// Alt çizgi aynı zamanda sekme şeridinin çizgisidir; sekmeler alt boşluğu aşıp bu çizgiye oturur
+.listHeader {
+  --list-page-header-padding-block: 12px;
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  // Sekmeler çizgiden kopmasın diye başlık satırı kırılmaz; dar ekranda araç çubuğu kendi içinde kırılır
+  flex-wrap: nowrap;
+  gap: var(--mantine-spacing-sm);
+  padding: var(--list-page-header-padding-block) var(--mantine-spacing-md);
+  background: transparent;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+
+  // Sekmesiz ve başlıksız sayfalarda aksiyonlar satırın ortasında
+  &[data-actions-align='center'] {
+    justify-content: center;
+  }
+
+  &[data-actions-align='end'] .listActions {
+    margin-inline-start: auto;
+  }
+}
+
+.listActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--mantine-spacing-xs);
+  min-width: 0;
+}
+
+// Sekmesiz sayfalarda düz başlık: sekme yazısıyla aynı hiza ve ağırlık
+.listTitle {
+  padding-inline: var(--mantine-spacing-md);
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 600;
+  color: var(--mantine-color-gray-9);
+}
+
+// Sekme satırı: başlığın alt boşluğunu negatif kenar boşluğuyla aşar, sekme tabanı alt çizgiye gelir
+.modeTabsRow {
+  align-self: flex-end;
+  margin-bottom: calc(-1 * var(--list-page-header-padding-block));
+}
+
+.scrollableModeTabsRow {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-bottom: 3px;
+  margin-bottom: calc(-1 * var(--list-page-header-padding-block) - 3px);
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  .modeTabs {
+    flex: 0 0 auto;
+  }
+}
+
+// Görünüm sekmeleri: çizgi altlı klasik sekme; Mantine'in kendi çizgisi ve sekme kenarlığı kapalı
+.modeTabs {
+  // Sekme iç boşlukları: sekme (42px) başlık satırını (30px buton + 12px alt boşluk) tam doldurur,
+  // yazı sağdaki butonlarla aynı hizada kalır (çizgiden 27px: 20px alt boşluk + 7px içerik yarısı)
+  --mode-tab-padding-block: 8px 20px;
+  --mode-tab-padding-inline: 16px;
+
+  .modeTabsList::before {
+    content: none;
+  }
+
+  .modeTab {
+    border-width: 0;
+    color: var(--mantine-color-gray-6);
+
+    // İkon/sayaç bölümleri satır yüksekliğini (14px) büyütmesin; yoksa başlık satırı ve tablo hesabı kayar
+    :global(.mantine-Tabs-tabSection) {
+      max-height: 14px;
+    }
+
+    // Üzerine gelince zemin yok, yalnızca yazı aktif rengine döner
+    &:hover,
+    &:active,
+    &[data-active] {
+      background-color: transparent;
+      color: var(--mantine-color-gray-9);
+    }
+
+    // Aktif gösterge: 5px, tam yuvarlak, sekme genişliğinde; başlığın 1px alt çizgisinin tam ortasına oturur
+    &[data-active]::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: -3px;
+      height: 5px;
+      border-radius: 999px;
+      background: var(--tabs-color);
+    }
+  }
+}
+
+// Gövde başlıktan kalan alana küçülebilir; içerik yüksekliği sayfayı büyütmez.
+.listBody {
+  --list-page-footer-height: 52px; // rail'deki kullanıcı kartı çizgisiyle aynı hizada (47px kart + 5px)
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+// Çerçeve ortak TableCard'dan gelir; burada yalnızca sayfa içindeki yerleşimi tanımlanır
+.tableArea {
+  flex: 1;
+  margin: var(--mantine-spacing-md);
+}
+
+// Başlık etiketi: sütun en az etiketi kadar geniş olur; uzun etiket bu sınırda (en fazla iki satıra) sarar
+.headLabel {
+  display: block;
+  width: max-content;
+  max-width: 140px;
+}
+
+// Başlık ve özet hücreleri sütuna yayılır; contain: inline-size kullanan metin max-content içinde daralmaz.
+.flexCell {
+  --app-table-cell-content-width: auto;
+  --app-table-cell-content-max-width: none;
+}
+
+// Yapışkan sayfalama altlığı (başlıkla aynı yapı: beyaz zemin, üst çizgi, compact, ortalı)
+.listFooter {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: var(--list-page-footer-height);
+  flex-shrink: 0;
+  // İçerik kısa kaldığında boşluk üstte kalır; altlık her zaman en altta, rail çizgisiyle aynı hizada
+  margin-top: auto;
+  padding: 0 var(--mantine-spacing-md);
+  background: var(--mantine-color-white);
+  border-top: 1px solid var(--mantine-color-gray-2);
+
+  :global(.mantine-Pagination-root) {
+    width: auto;
+    padding: 0;
+    background: transparent;
+  }
+}

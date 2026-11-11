@@ -1,0 +1,48 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+  width: 42px;
+  height: 30px;
+}
+
+.clear {
+  position: absolute;
+  right: 0;
+  bottom: -12px;
+  z-index: 1;
+}
+
+.clearMark {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  color: var(--mantine-color-cyan-light-color);
+  background: var(--mantine-color-cyan-light);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--mantine-color-body);
+}
+
+.clear:hover .clearMark {
+  background: var(--mantine-color-cyan-light-hover);
+}
+
+/* Touch targets stay separate; the desktop shortcut remains attached to the corner. */
+@media (pointer: coarse) {
+  .root {
+    width: 92px;
+    height: 68px;
+  }
+
+  .filter,
+  .clear {
+    width: 44px;
+    height: 44px;
+  }
+
+  .clear {
+    bottom: 0;
+  }
+}

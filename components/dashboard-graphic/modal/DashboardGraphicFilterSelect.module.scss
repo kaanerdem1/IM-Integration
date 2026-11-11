@@ -1,0 +1,18 @@
+// Empty search groups remain in the DOM; separate only after an option or a populated group.
+[role='option'] ~ .group,
+.group:has([role='option']) ~ .group {
+  margin-top: calc(var(--mantine-spacing-xs) / 2);
+  border-top: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+}
+
+.groupLabel {
+  // Match the project Menu.Label spacing and lower separator without its menu-only offsets.
+  padding: 10px;
+  margin-bottom: 7px;
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+
+  &::after {
+    // The shared heading uses the full row for its title and right-aligned counters.
+    display: none;
+  }
+}

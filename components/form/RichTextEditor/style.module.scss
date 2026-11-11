@@ -1,0 +1,34 @@
+.root {
+  :global(.ProseMirror) {
+    background-color: transparent;
+  }
+
+  &[data-disabled] {
+    [data-rich-text-editor-control],
+    [data-rich-text-editor-control][data-active] {
+      background-color: transparent;
+      color: var(--mantine-color-gray-7);
+    }
+
+    // Zemin kök öğede; burada ayrıca boyanırsa editör içinde renk bandı oluşuyor
+    :global(.ProseMirror) {
+      background-color: transparent;
+      color: var(--mantine-color-gray-7);
+    }
+  }
+}
+
+.content {
+  background-color: transparent;
+
+  :global(.ProseMirror) {
+    background-color: transparent;
+    min-height: inherit;
+    overflow-wrap: anywhere;
+    padding: var(--mantine-spacing-sm);
+  }
+
+  :global(.ProseMirror:focus) {
+    outline: none;
+  }
+}
