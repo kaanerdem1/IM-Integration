@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router';
 import { Drawer } from '@mantine/core';
 import { appUrlPrefix } from '@/_common/_constants';
 import { DrawerDetailHead } from '@/components/display/DetailDrawerSkelaton/Head';
+import { DrawerDetailBody } from '@/components/display/DetailDrawerSkelaton';
 import drawerClasses from '@/components/display/DetailDrawerSkelaton/style.module.scss';
+import { CatalogShell } from './catalog/CatalogShell';
 
 const DRAWER_OVERLAY_PROPS = { backgroundOpacity: 0.2, blur: 4 };
 const SERVICE_INVENTORY_DRAWER_CLASS_NAMES = {
@@ -34,8 +36,11 @@ export const ServiceInventoryDrawer = () => {
       offset={10}
     >
       <DrawerDetailHead closeButtonAriaLabel={t('label.serviceInventory.close')} onClose={onClose}>
-        {null}
+        Servis Kataloğu
       </DrawerDetailHead>
+      <DrawerDetailBody>
+        <CatalogShell />
+      </DrawerDetailBody>
     </Drawer>
   );
 };

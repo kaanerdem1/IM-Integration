@@ -1,0 +1,497 @@
+.shell {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: #e7edf2;
+  color: #1c2430;
+}
+
+.masthead {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  height: 52px;
+  padding: 0 12px 0 16px;
+  background: #171b22;
+  color: #f4f7fb;
+}
+
+.surfaceTabs {
+  display: inline-flex;
+  align-items: stretch;
+  width: max-content;
+  border-bottom: 1px solid rgba(230, 234, 239, 0.14);
+}
+
+.surfaceTab {
+  position: relative;
+  padding: 10px 16px 12px;
+  border: 0;
+  background: transparent;
+  color: rgba(230, 234, 239, 0.55);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.surfaceTab + .surfaceTab {
+  border-left: 1px solid rgba(230, 234, 239, 0.16);
+}
+
+.surfaceTab[data-active='true'] {
+  color: #f7f8fa;
+}
+
+.surfaceTab[data-active='true']::after {
+  content: '';
+  position: absolute;
+  right: 10%;
+  bottom: 0;
+  left: 10%;
+  height: 2px;
+  background: #4da6ff;
+}
+
+.brand {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.mastheadActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.healthButton {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #3a4250;
+  border-radius: 999px;
+  background: #222833;
+  color: #f4f7fb;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.body {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: 280px minmax(0, 1fr) 300px;
+  min-height: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 12px 10px 8px;
+  background: #171b22;
+  color: #e6eaef;
+  border-right: 1px solid #2c3340;
+}
+
+.sidebarHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #949bab;
+}
+
+.kindRow {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.kindChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+  padding: 2px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #9aa3b2;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.kindChip[data-active='true'] {
+  background: transparent;
+  color: #f4f7fb;
+}
+
+.kindIcon,
+.flatIcon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #e6eaef;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.tree {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.treeButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.treeButton[data-selected='true'] {
+  background: rgba(77, 166, 255, 0.16);
+  box-shadow: inset 2px 0 0 #4da6ff;
+}
+
+.treeName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.treeCount {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: #8b93a1;
+  font-size: 11px;
+}
+
+.moreButton {
+  width: calc(100% - 28px);
+  margin: 4px 0 8px 28px;
+  padding: 7px 10px;
+  border: 1px solid #3c4658;
+  border-radius: 8px;
+  background: #1d2430;
+  color: #d5dbe3;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sidebarFoot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid #2c3340;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: #eef2f6;
+}
+
+.stageHead {
+  padding: 14px 18px 0;
+  background: #fff;
+  border-bottom: 1px solid #e1e6ee;
+
+  :global(.mantine-Tabs-root) {
+    width: max-content;
+    max-width: 100%;
+  }
+
+  :global(.mantine-Tabs-list) {
+    width: max-content;
+  }
+}
+
+.stageTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.presence {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: #2f9e6b;
+  flex: 0 0 auto;
+}
+
+.stageTitle {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subTabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+.viewToggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  height: 32px;
+  padding: 2px;
+  gap: 2px;
+  border-radius: 8px;
+  background: #f1f4f9;
+}
+
+.viewToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #5b6577;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.viewToggleBtn svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.viewToggleBtn[data-active='true'] {
+  background: #fff;
+  border-color: #e1e6ef;
+  color: #3d4a63;
+  font-weight: 600;
+}
+
+.canvas {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+}
+
+.mapNode {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: min(460px, 70%);
+  min-height: 74px;
+  padding: 16px 28px;
+  border: 2px solid #d7e4dc;
+  border-radius: 14px;
+  background: #1d3b32;
+  color: #f4f7f5;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.dock {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  display: flex;
+  align-items: stretch;
+  max-width: calc(100% - 32px);
+  padding: 0 6px;
+  border: 1px solid #e1e6ef;
+  border-radius: 12px;
+  background: #fff;
+  color: #3d4a63;
+  transform: translateX(-50%);
+}
+
+.dockGrip,
+.dockBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #5b6577;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dockGrip {
+  align-self: center;
+  width: 26px;
+  color: #8b93a1;
+}
+
+.dockSep {
+  align-self: center;
+  width: 1px;
+  height: 28px;
+  background: #e1e6ef;
+}
+
+.dockGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 8px 8px 6px;
+}
+
+.dockKicker {
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8b93a1;
+}
+
+.dockRow {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 24px;
+}
+
+.dockHop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.impact {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #fff;
+  border-left: 1px solid #e1e6ee;
+}
+
+.impactHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 14px 8px;
+}
+
+.metric {
+  padding: 8px 16px 0;
+}
+
+.metricValue {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metricLabel {
+  margin-top: 4px;
+  color: #5c6775;
+  font-size: 13px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 16px;
+}
+
+.split dt {
+  color: #8b93a1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.split dd {
+  margin: 4px 0 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.path {
+  padding: 8px 16px 16px;
+}
+
+.pathTitle {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #8b93a1;
+}
+
+.emptyPath {
+  margin: 0;
+  color: #5c6775;
+  font-size: 13px;
+  line-height: 1.45;
+}

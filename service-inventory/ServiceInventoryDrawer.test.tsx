@@ -21,7 +21,7 @@ vi.mock('@mantine/core', async (importOriginal) => ({
 }));
 
 describe('ServiceInventoryDrawer', () => {
-  it('fills the viewport with an inset, rounded corners, empty content and a close button', () => {
+  it('opens the catalog shell inside the fullscreen drawer and closes back to home', () => {
     const container = document.createElement('div');
     const root = createRoot(container);
     document.body.appendChild(container);
@@ -56,9 +56,11 @@ describe('ServiceInventoryDrawer', () => {
           },
         })
       );
-      expect(drawer?.querySelector('input')).toBeNull();
-      expect(drawer?.querySelector('[role="tablist"]')).toBeNull();
-      expect(drawer?.querySelectorAll('button')).toHaveLength(1);
+      expect(drawer?.querySelector('[data-testid="catalog-shell"]')).not.toBeNull();
+      expect(drawer?.querySelector('[data-testid="module-tree"]')).not.toBeNull();
+      expect(drawer?.querySelector('[data-testid="service-stage"]')).not.toBeNull();
+      expect(drawer?.querySelector('[data-testid="impact-summary"]')).not.toBeNull();
+      expect(drawer?.textContent).toContain('CONS_DSS_APPLICATION_SEARCH_POPUP_LIST');
 
       act(() => {
         drawer
